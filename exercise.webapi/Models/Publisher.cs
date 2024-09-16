@@ -8,10 +8,8 @@ namespace exercise.webapi.Models
         public int Id { get; set; }
         [Column("name")]
         public string Name { get; set; }
-        [Column("bookid")]
-        public int BookId { get; set; } 
-        //public Book books { get; set; }
-        public List<Book> Books { get; set; } 
+       
+        public List<Book> Books { get; set; }
 
     }
 }

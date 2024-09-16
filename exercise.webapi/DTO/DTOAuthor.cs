@@ -2,7 +2,9 @@
 {
     public class DTOAuthor
     {
-        public string name {  get; set; }   
-        public List<DTOBook> books { get; set; } = new List<DTOBook>(); 
+        public int Id { get; set; } 
+        public string FirstName {  get; set; }   
+        public string LastName { get; set; }
+        
     }
 }

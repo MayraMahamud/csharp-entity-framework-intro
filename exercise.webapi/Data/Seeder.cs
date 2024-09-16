@@ -1,4 +1,6 @@
 ﻿using exercise.webapi.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace exercise.webapi.Data
 {
@@ -85,17 +87,24 @@ namespace exercise.webapi.Data
             "Leopards"
         };
 
+        private List<Publisher> _publishers = new List<Publisher>();
         private List<Author> _authors = new List<Author>();
         private List<Book> _books = new List<Book>();
-        private List<Publisher> _publishers = new List<Publisher>();
+       
 
         public Seeder()
         {
-
+            Random publisherRandom = new Random();
             Random authorRandom = new Random();
             Random bookRandom = new Random();
-            Random publisherRandom = new Random();
-
+           
+           for (int x = 1; x < 100; x++)
+            {
+                Publisher publisher = new Publisher();
+                publisher.Id = x;
+                publisher.Name = $"{_NameOfPublishers[publisherRandom.Next(_NameOfPublishers.Count)]}";
+                _publishers.Add(publisher);
+            }
 
 
             for (int x = 1; x < 250; x++)
@@ -115,24 +124,34 @@ namespace exercise.webapi.Data
                 book.Id = y;
                 book.Title = $"{_firstword[bookRandom.Next(_firstword.Count)]} {_secondword[bookRandom.Next(_secondword.Count)]} {_thirdword[bookRandom.Next(_thirdword.Count)]}";
                 book.AuthorId = _authors[authorRandom.Next(_authors.Count)].Id;
-                //book.PublisherId = _publishers[publisherRandom.Next(_publishers.Count)].Id;
+                book.PublisherId = 1; //book.PublisherId = _publishers[publisherRandom.Next(_publishers.Count)].Id;
                 //book.Author = authors[book.AuthorId-1];
                 _books.Add(book);
             }
 
 
-            for (int x = 1; x < 100; x++)
-            {
-                Publisher publisher = new Publisher();
-                publisher.Id = x;
-                publisher.Name = $"{_NameOfPublishers[publisherRandom.Next(_firstword.Count)]}";
-                _publishers.Add(publisher);
-            }
+          
 
 
 
+            //var publishers = new List<Publisher>
+            //{
+            //    new Publisher() { Id = 1, Name = "Adlibris" }
+            //};
 
+            //var authors = new List<Author>
+            //{
+            //    new Author() { Id = 1, FirstName = "Audrey", LastName = "Hepburn" },
+            //    new Author () { Id = 2, FirstName = "Donald", LastName = "Trump"}
+            //};
 
+            //var books = new List<Book>
+            //{
+            //    new Book() { Id = 1, Title = "The Hunger Games", AuthorId = 1, PublisherId = 1 },
+            //    new Book () { Id = 2, Title = "Divergent", AuthorId = 2, PublisherId = 1}
+            //};
+
+           
 
 
         }

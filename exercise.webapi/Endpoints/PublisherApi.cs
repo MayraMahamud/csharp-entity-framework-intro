@@ -29,40 +29,20 @@ namespace exercise.webapi.Endpoints
             {
                 Id = p.Id,
                 Name = p.Name,
-                books = p.Books.Select(b => new DTOBook
+                Books = p.Books.Select(b => new BookWithAuthorDTO
                 {
                     Title = b.Title,
                     Id = b.Id,
-                    AuthorName = $"{b.Author.FirstName} {b.Author.LastName}"
+                    Author = new DTOAuthor
+                    
+                    {
+                        Id = b.Author.Id,
+                        FirstName = b.Author.FirstName,
+                        LastName = b.Author.LastName
+                    }
                 }).ToList()
-            });
+            }).ToList();
             return Results.Ok(DTOPublisher);
-
-
-
-
-
-
-            var publishers2 = await publisherRepository.GetPublishers();
-            DTOPublisherResponse response = new DTOPublisherResponse();
-            foreach (var publisher in publishers)
-            {
-                DTOPublisher p = new DTOPublisher();
-                p.Name = $"{publisher.Name}";
-                foreach (var b in publisher.Books)
-                {
-                    DTOBook book = new DTOBook();
-                    book.Title = b.Title;
-                    p.books.Add(book);
-                }
-                response.Publishers.Add(p);
-
-            }
-
-            return TypedResults.Ok(response);
-
-
-
 
         }
 
@@ -75,19 +55,32 @@ namespace exercise.webapi.Endpoints
                 return Results.NotFound();
             }
 
-            var DTOPublisher = new DTOPublisher();
-            //{
-            //    Id = publisher.Id;
-            //    Name = publisher.Name;
-            //    Books = publisher.Books.Select(b => new DTOBook)
-            //    {
-            //        Id = b.Id,
-            //        Title = b.Title,
-            //        AuthorName = $"{b.Author.FirstName} {b.Author.LastName}"}).ToList()
-
-            //};
+            var DTOPublisher = new DTOPublisher
+            {
+                Id = publisher.Id,
+                Name = publisher.Name,
+                Books = publisher.Books.Select(b => new BookWithAuthorDTO
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Author = new DTOAuthor
+                    {
+                        Id = b.Author.Id,
+                        FirstName = b.Author.FirstName,
+                        LastName = b.Author.LastName
+                    }
+                }).ToList(),
+            };
             return Results.Ok(DTOPublisher);
+                     
         }
+
+       
+
+
+
+
+
     }
 }
 

@@ -4,6 +4,10 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<DTOBook> books { get; set; } 
+      
+
+
+        public List<BookWithAuthorDTO> Books { get; set; }
+
     }
 }

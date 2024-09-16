@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using exercise.webapi.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace exercise.webapi.DTO
 {
@@ -6,8 +8,12 @@ namespace exercise.webapi.DTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string AuthorName { get; set; }
-        public List<DTOBook> books { get; set; } /*= new List<DTOBook>();*/
+        public string  AuthorName { get; set; }
+
+        public string Publisher { get; set; }
+        [Column("publisherid")]
+        public int PublisherId { get; set; }
+        public List<DTOBook> Books { get; set; } 
 
     }
 }

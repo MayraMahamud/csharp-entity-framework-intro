@@ -34,7 +34,10 @@ namespace exercise.webapi.Endpoints
             DTOBookResponse bookResponse = new DTOBookResponse();
             DTOBook dTOBook = new DTOBook
             {
-                Title = $"{book.Title}"
+                Title = $"{book.Title}",
+               
+                Id = book.AuthorId
+
 
             };
 
@@ -46,11 +49,16 @@ namespace exercise.webapi.Endpoints
         {
             var books = await bookRepository.GetAllBooks();
             DTOBookResponse response = new DTOBookResponse();
-            foreach (var book in books) 
+            foreach (var book in books)
             {
                 DTOBook b = new DTOBook();
+                b.Id = book.Id;
                 b.Title = book.Title;
+                b.PublisherId = book.PublisherId;
                 b.AuthorName = $"{book.Author.FirstName} {book.Author.LastName}";
+                b.Publisher = book.Publisher.Name;
+
+              
                 response.Books.Add(b);
 
             }
@@ -58,8 +66,11 @@ namespace exercise.webapi.Endpoints
 
         }
 
+
+
+
         public static async Task<IResult> UpdateABook(IBookRepository bookRepository, int bookId, int newAuthorId, IAuthorRepository authorRepository)
-        {
+          {
             var book = await bookRepository.GetById(bookId);
             if (book == null)
             {
@@ -148,19 +159,33 @@ namespace exercise.webapi.Endpoints
         }
 
 
-        //public static async Task<IResult> RemoveAuthorFromBook(int bookID, int authorId, IBookRepository bookRepository, IAuthorRepository authorRepository)
-        //{
-        //    var book = await bookRepository.GetById(bookID);
-        //    if (book == null)
-        //    {
-        //        return Results.NotFound();
-        //    }
-        //    book.AuthorId = null;
-        //    await bookRepository.SaveChangesAsync();
+        public static async Task<IResult> GetBookWithAuthorAndPublisher(IBookRepository bookRepository, int id)
+        {
+            var book = await bookRepository.GetBookWithAuthorAndPublisher(id);
+            if (book == null)
+            { return Results.NotFound(); }
+            var bookDTO = new BookWithAuthorAndPublisherDTO
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = new DTOAuthor
+                {
+                    Id = book.Author.Id,
+                    FirstName = book.Author.FirstName,
+                    LastName = book.Author.LastName
 
-        //    return TypedResults.Ok(book);
+                },
+                Publisher = new DTOPublisher
+                {
+                    Id = book.Publisher.Id,
+                    Name = book.Publisher.Name
+                }
+            };
 
-        //}
+            return Results.Ok(bookDTO);
+        }
+
+
 
     }
 }
